@@ -1,4 +1,5 @@
 import 'package:bn_en_trans/core/app_routes.dart';
+import 'package:bn_en_trans/utils/app_colors.dart';
 import 'package:bn_en_trans/utils/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
+      backgroundColor: AppColors.secondaryClr,
       body: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15.r),
