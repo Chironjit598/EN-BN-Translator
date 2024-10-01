@@ -39,6 +39,10 @@ dependencies:
   flutter_screenutil: ^5.9.3
   bottom_navy_bar: ^6.1.0
   translator_plus: ^1.0.1
+  flutter_tts: ^4.0.2
+  fluttertoast: ^8.2.8
+  share_plus: ^10.0.2
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:

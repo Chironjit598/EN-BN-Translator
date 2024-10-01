@@ -4,14 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget customTextFeild({ValueChanged<String>? onChanged, String? hintText,  maxLine, }) {
+Widget customTextFeild({controller,ValueChanged<String>? onChanged, String? hintText,  maxLine, }) {
   return Padding(
     padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
     child: TextField(
+      controller: controller,
       onChanged: onChanged,
 
       maxLines: maxLine,
       decoration: InputDecoration(
+
         hintText: hintText,
         helperStyle: TextStyle(
           color: AppColors.blackClr,
