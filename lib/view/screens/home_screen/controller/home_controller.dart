@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:translator_plus/translator_plus.dart';
@@ -54,17 +55,25 @@ class HomeController extends GetxController {
   //====================== speech to text================================//
 
   void startListening(String fromLanguage) async {
-    bool available = await speechToText.initialize();
-    if (available) {
-      isListening.value = true;
-      speechToText.listen(
-        onResult: (result) {
-          inputText.value = result.recognizedWords;
-          userInputcontroller.text = result.recognizedWords;
-        },
-        localeId: fromLanguage == 'bn' ? 'bn_BD' : 'en_US',
-      );
+    var microphonePermission = await Permission.microphone.status;
+    if (microphonePermission.isGranted) {
+
+      bool available = await speechToText.initialize();
+      if (available) {
+        isListening.value = true;
+        speechToText.listen(
+          onResult: (result) {
+            inputText.value = result.recognizedWords;
+            userInputcontroller.text = result.recognizedWords;
+          },
+          localeId: fromLanguage == 'bn' ? 'bn_BD' : 'en_US',
+        );
+      }
+    } else {
+
+      await Permission.microphone.request();
     }
+
   }
 
   void stopListening() {
