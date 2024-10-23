@@ -1,12 +1,14 @@
-import 'package:bn_en_trans/main.dart';
 import 'package:bn_en_trans/utils/app_colors.dart';
 import 'package:bn_en_trans/view/screens/home_screen/controller/home_controller.dart';
+import 'package:bn_en_trans/view/screens/home_screen/widgets/drawer_widget.dart';
 import 'package:bn_en_trans/view/widget/circle_button.dart';
 import 'package:bn_en_trans/view/widget/custom_button.dart';
 import 'package:bn_en_trans/view/widget/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../widget/custom_text_feild.dart';
 
@@ -21,10 +23,6 @@ class HomeScreen extends StatelessWidget {
       //============================Appbar Start Code=======================//
       appBar: AppBar(
         backgroundColor: AppColors.primaryClr,
-        leading: Icon(
-          Icons.menu,
-          color: AppColors.whiteClr,
-        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -57,7 +55,30 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
 
+      drawer: SafeArea(
+          child: Drawer(
+        child: DrawerWidget(
+          onClickHome: () => Navigator.pop(context, false),
+          onClickRateUs: () {
+            Navigator.pop(context);
+            homeController.launchAppReview();
+          },
+          onClickShareApp: () {
+            Navigator.pop(context);
+            Share.share(homeController.appShareUrl);
+          },
+          onClickPrivacyPolicy: () {
+            Navigator.pop(context);
+            homeController.launchPrivacy();
+          },
+
+          onClickExit: () {
+            SystemNavigator.pop();
+          },
+        ),
+      )),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(10.w),
         child: Column(
           children: [
             //=========================user input TextField section==========================//
@@ -79,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                         Obx(() {
                           return Visibility(
                             visible: homeController.inputText.value.isNotEmpty,
-                            child: CircleButton(
+                            child: circleButton(
                                 icon: Icons.clear,
                                 ontap: () {
                                   homeController.clearText();
@@ -87,15 +108,16 @@ class HomeScreen extends StatelessWidget {
                           );
                         }),
                         Obx(() => IconButton(
-                          icon: Icon(homeController.isListening.value ? Icons.mic : Icons.mic_none),
-                          onPressed: homeController.isListening.value
-                              ? homeController.stopListening
-                              : () {
-
-                            homeController.startListening(homeController.fromLanguage.value);
-                          },
-                        )),
-
+                              icon: Icon(homeController.isListening.value
+                                  ? Icons.mic
+                                  : Icons.mic_none),
+                              onPressed: homeController.isListening.value
+                                  ? homeController.stopListening
+                                  : () {
+                                      homeController.startListening(
+                                          homeController.fromLanguage.value);
+                                    },
+                            )),
                       ],
                     ))
               ],
@@ -139,22 +161,22 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         //==========================Text to speak section===================//
                         Obx(
-                          () => CircleButton(
+                          () => circleButton(
                               ontap: () {
-                                homeController.textToSpeach();
+                                homeController.textToSpeech();
                               },
                               icon: homeController.isSpeaking.value
                                   ? Icons.volume_off
                                   : Icons.volume_up_outlined),
                         ),
-                        CircleButton(icon: Icons.heart_broken),
-                        CircleButton(
+                        circleButton(icon: Icons.heart_broken),
+                        circleButton(
                             ontap: () {
                               homeController.shareTranslatedText();
                             },
                             icon: Icons.share),
                         //==========================Copy Clipboard section===================//
-                        CircleButton(
+                        circleButton(
                             ontap: () {
                               homeController.copyToClipboard();
                             },
