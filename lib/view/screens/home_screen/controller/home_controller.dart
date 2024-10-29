@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:translator_plus/translator_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   GoogleTranslator translator = GoogleTranslator();
@@ -44,7 +45,7 @@ class HomeController extends GetxController {
     }
   }
 
-  //========================Clear Tect ===================================//
+  //========================Clear Text ===================================//
 
   void clearText() {
     userInputcontroller.clear();
@@ -81,9 +82,9 @@ class HomeController extends GetxController {
     isListening.value = false;  // Stop listening
   }
 
-  //==========================text to speach==============================//
+  //==========================text to speech==============================//
 
-  void textToSpeach() async {
+  void textToSpeech() async {
     if (isSpeaking.value) {
       await flutterTts.stop();
       isSpeaking.value = false;
@@ -116,6 +117,33 @@ class HomeController extends GetxController {
       Share.share(translatedText.value);
     }
   }
+
+  //============Drawer Menu=================
+  var appReviewUrl =
+      'https://play.google.com/store/apps/details?id=com.example.bn_en_trans';
+  var privacyUrl = 'https://sites.google.com/view/ekadashi-barta-privacy-policy';
+  var appShareUrl =
+      'Download Link:\nhttps://play.google.com/store/apps/details?id=com.example.bn_en_trans';
+
+  //declare method
+  launchAppReview() async {
+    final Uri url = Uri.parse(appReviewUrl);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  launchPrivacy() async {
+    final Uri url = Uri.parse(privacyUrl);
+    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+
+
+
+
 
   //=================================onInit=============================//
   @override

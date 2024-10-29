@@ -1,4 +1,3 @@
-import 'package:bn_en_trans/main.dart';
 import 'package:bn_en_trans/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
